@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 	"code.gitea.io/gitea/modules/setting"
-	"code.gitea.io/gitea/modules/log"
 
 )
 
@@ -39,7 +38,7 @@ func NewClient() *Client {
 
 func (c *Client) GetAllReferences(repo string) ([]Reference, error) {
 	// TODO: figure out how to handle multiple repositories
-	url := fmt.Sprintf("%s/api/v1/trees/", c.baseURL)
+	url := fmt.Sprintf("%s/api/v2/trees/", c.baseURL)
 	
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -64,6 +63,35 @@ func (c *Client) GetAllReferences(repo string) ([]Reference, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 		return nil, fmt.Errorf("failed to decode response: %v", err)
 	}
-	log.Info("Nessie references: %v", response.References)
 	return response.References, nil
 } 
+
+func (c *Client) GetBranches(repo string) ([]Reference, error) {
+	refs, err := c.GetAllReferences(repo)
+	if err != nil {
+		return nil, err
+	}
+
+	var branches []Reference
+	for _, ref := range refs {
+		if ref.Type == "BRANCH" {
+			branches = append(branches, ref)
+		}
+	}
+	return branches, nil
+}
+
+func (c *Client) GetTags(repo string) ([]Reference, error) {
+	refs, err := c.GetAllReferences(repo)
+	if err != nil {
+		return nil, err
+	}
+
+	var tags []Reference
+	for _, ref := range refs {
+		if ref.Type == "TAG" {
+			tags = append(tags, ref)
+		}
+	}
+	return tags, nil
+}

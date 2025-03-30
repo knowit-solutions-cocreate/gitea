@@ -65,6 +65,7 @@ import {initGlobalButtonClickOnEnter, initGlobalButtons, initGlobalDeleteButton}
 import {initGlobalComboMarkdownEditor, initGlobalEnterQuickSubmit, initGlobalFormDirtyLeaveConfirm} from './features/common-form.ts';
 import {callInitFunctions} from './modules/init.ts';
 import {initRepoViewFileTree} from './features/repo-view-file-tree.ts';
+import {initCatalogBranchTagSelector} from './features/repo-catalog.ts';
 
 initGiteaFomantic();
 initSubmitEventPolyfill();
@@ -124,6 +125,7 @@ onDomReady(() => {
     initRepoBranchButton,
     initRepoCodeView,
     initBranchSelectorTabs,
+    initCatalogBranchTagSelector,
     initRepoEllipsisButton,
     initRepoDiffCommitBranchesAndTags,
     initRepoEditor,
@@ -162,6 +164,7 @@ onDomReady(() => {
     initColorPickers,
 
     initOAuth2SettingsDisableCheckbox,
+    
   ]);
 
   // it must be the last one, then the "querySelectorAll" only needs to be executed once for global init functions.

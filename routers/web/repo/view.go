@@ -402,18 +402,12 @@ func CatalogHome(ctx *context.Context) {
 		ctx.ServerError("GetAllReferences", err)
 		return
 	}
-	log.Info("Current branch: %s", ctx.Repo.BranchName)
-	log.Info("References: %+v", refs)
 	
 	ctx.Data["NessieRefs"] = refs
 	ctx.Data["CurrentBranch"] = ctx.Repo.BranchName
 	if ctx.Data["CurrentBranch"] == "" {
 		ctx.Data["CurrentBranch"] = setting.Nessie.DefaultBranch
 	}
-
-	// Add these debug values
-	ctx.Data["BranchesLink"] = fmt.Sprintf("%s/catalog/branches", ctx.Repo.RepoLink)
-	ctx.Data["TagsLink"] = fmt.Sprintf("%s/catalog/tags", ctx.Repo.RepoLink)
 
 	ctx.HTML(http.StatusOK, tplCatalog)
 }
