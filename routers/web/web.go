@@ -1501,6 +1501,8 @@ func registerRoutes(m *web.Router) {
 	m.Group("/{username}/{reponame}/catalog", func() {
 		// Example routes for a data catalog:
 		m.Get("", repo.CatalogHome) // Landing page showing catalog overview
+		m.Get("/branches/list", repo.ListBranches)
+		m.Get("/tags/list", repo.ListTags)
 		// m.Get("/datasets", repo.ListDatasets) // List all datasets
 		// m.Get("/datasets/{name}", repo.ViewDataset) // View single dataset details
 		// m.Get("/datasets/{name}/schema", repo.ViewDatasetSchema) // View dataset schema

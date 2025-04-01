@@ -1,0 +1,33 @@
+<div class="catalog-branch-selector"
+    data-global-init="initCatalogBranchTagSelector"
+    data-text-branches="{{ctx.Locale.Tr "repo.branches"}}"
+    data-text-tags="{{ctx.Locale.Tr "repo.tags"}}"
+    data-text-filter-branch="{{ctx.Locale.Tr "repo.pulls.filter_branch"}}"
+    data-text-filter-tag="{{ctx.Locale.Tr "repo.find_tag"}}"
+    data-text-no-results="{{ctx.Locale.Tr "no_results_found"}}"
+    data-text-view-all-branches="{{ctx.Locale.Tr "repo.view_all_branches"}}"
+    data-text-view-all-tags="{{ctx.Locale.Tr "repo.view_all_tags"}}"
+
+    data-current-repo-default-branch="{{.Repository.DefaultBranch}}"
+    data-current-repo-link="{{$.RepoLink}}"
+    data-current-tree-path=""
+    data-current-ref-type="branch"
+    data-current-ref-short-name="{{.CurrentBranch}}"
+
+    data-ref-link-template="{{$.RepoLink}}/catalog/{RefType}/{RefShortName}"
+    data-show-tab-branches="true"
+    data-show-tab-tags="true"
+    data-allow-create-new-ref="false"
+    data-show-view-all-refs-entry="false"
+>
+    {{/* show dummy elements before Vue component is mounted */}}
+    <div class="ui dropdown custom branch-selector-dropdown ellipsis-items-nowrap">
+        <div class="ui button branch-dropdown-button">
+            <span class="flex-text-block gt-ellipsis">
+                {{svg "octicon-git-branch"}}
+                <strong class="tw-ml-2 tw-inline-block gt-ellipsis">{{.CurrentBranch}}</strong>
+            </span>
+            {{svg "octicon-triangle-down" 14 "dropdown icon"}}
+        </div>
+    </div>
+</div>

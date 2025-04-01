@@ -33,6 +33,7 @@ import (
 	"code.gitea.io/gitea/modules/lfs"
 	"code.gitea.io/gitea/modules/log"
 	"code.gitea.io/gitea/modules/markup"
+	"code.gitea.io/gitea/modules/nessie"
 	"code.gitea.io/gitea/modules/setting"
 	"code.gitea.io/gitea/modules/structs"
 	"code.gitea.io/gitea/modules/templates"
@@ -389,8 +390,24 @@ func Forks(ctx *context.Context) {
 	ctx.HTML(http.StatusOK, tplForks)
 }
 
-// CatalogHome renders the repository catalog home/overview page
 func CatalogHome(ctx *context.Context) {
 	ctx.Data["PageIsCatalog"] = true
+	
+	// Initialize Nessie client
+	client := nessie.NewClient()
+	
+	// Get references from Nessie
+	refs, err := client.GetAllReferences(ctx.Repo.Repository.Name)
+	if err != nil {
+		ctx.ServerError("GetAllReferences", err)
+		return
+	}
+	
+	ctx.Data["NessieRefs"] = refs
+	ctx.Data["CurrentBranch"] = ctx.Repo.BranchName
+	if ctx.Data["CurrentBranch"] == "" {
+		ctx.Data["CurrentBranch"] = setting.Nessie.DefaultBranch
+	}
+
 	ctx.HTML(http.StatusOK, tplCatalog)
 }
